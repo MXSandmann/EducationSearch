@@ -1,9 +1,8 @@
 ﻿namespace EducationSearchV3.Models.Enums
 {
     public enum Languages
-    {
-        None = 0,
-        English,
+    {        
+        English = 1,
         German,
         French,
         Italian,
@@ -17,7 +16,7 @@
         Finnish,
         Latvian,
         Estonian,
-        lithuanian,
+        Lithuanian,
         Chinese,
         Japanese
     }

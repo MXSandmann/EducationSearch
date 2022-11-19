@@ -72,24 +72,25 @@ namespace EducationSearchV3.Data
 
         private static void SeedLanguages(DataContext context)
         {
-            if(context.Languages.Any())
+            var languagesDefined = Enum.GetValues(typeof(Languages));
+
+            if (context.Languages.Count() == languagesDefined.Length)
                 return;
 
             Console.WriteLine("-> Seeding languages data");
 
-            context.AddRange(
-                new Language
+            var languages = new List<Language>();
+
+            foreach (Languages item in languagesDefined)
+            {
+                var language = new Language
                 {
-                    Name = Languages.English,
-                },
-                new Language
-                {
-                    Name = Languages.German,
-                },
-                new Language
-                {
-                    Name = Languages.Italian
-                });
+                    Name = item
+                };
+                languages.Add(language);
+            }
+
+            context.AddRange(languages);
             context.SaveChanges();
 
             
