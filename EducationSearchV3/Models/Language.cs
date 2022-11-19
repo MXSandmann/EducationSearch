@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EducationSearchV3.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace EducationSearchV3.Models
 {
@@ -6,7 +7,7 @@ namespace EducationSearchV3.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public IEnumerable<Country>? Countries { get; set; }
+        public Languages Name { get; set; }
+        //public IEnumerable<Country>? Countries { get; set; }
     }
 }

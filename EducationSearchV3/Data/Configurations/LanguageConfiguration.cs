@@ -1,6 +1,7 @@
 ﻿using EducationSearchV3.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using EducationSearchV3.Models.Enums;
 
 namespace EducationSearchV3.Data.Configurations
 {
@@ -8,7 +9,8 @@ namespace EducationSearchV3.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Language> builder)
         {
-            builder.HasMany(l => l.Countries).WithMany(c => c.Languages);
+            builder.Property(l => l.Name).HasConversion(l => l.ToString(), l => Enum.Parse<Languages>(l));
+            builder.ToTable("Languages");
         }
     }
 }

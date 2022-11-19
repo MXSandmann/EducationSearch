@@ -11,6 +11,12 @@ namespace EducationSearchV3.Data
         public DbSet<EducationProgram> EducationProgram { get; set; } = null!;
         public DbSet<Language> Languages { get; set; } = null!;
         public DbSet<Subject> Subjects { get; set; } = null!;
+        public DbSet<HighSchool> HighSchools { get; set; } = null!;
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(DataContext).Assembly);
+        }
     }
+
 }

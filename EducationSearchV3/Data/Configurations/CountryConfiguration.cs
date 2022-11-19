@@ -8,7 +8,7 @@ namespace EducationSearchV3.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Country> builder)
         {
-            builder.HasMany(c => c.Languages).WithMany(l => l.Countries);
+            builder.HasMany(c => c.Languages);//.WithMany(l => l.Countries);
             builder.HasMany(c => c.HighSchools);
             builder.ToTable("Countries");
         }

@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducationSearchV3", "EducationSearchV3\EducationSearchV3.csproj", "{356320A1-97FE-450C-8FBF-B59AE80480D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EducationSearchV3", "EducationSearchV3\EducationSearchV3.csproj", "{356320A1-97FE-450C-8FBF-B59AE80480D8}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{0F1D596F-1856-485F-8863-F4FF9ED2FF96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducationSearchV3Test", "EducationSearchV3Test\EducationSearchV3Test.csproj", "{8D6A7D6C-09F9-41C4-AAB7-EBE24CEEF1DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{0F1D596F-1856-485F-8863-F4FF9ED2FF96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F1D596F-1856-485F-8863-F4FF9ED2FF96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F1D596F-1856-485F-8863-F4FF9ED2FF96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D6A7D6C-09F9-41C4-AAB7-EBE24CEEF1DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D6A7D6C-09F9-41C4-AAB7-EBE24CEEF1DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D6A7D6C-09F9-41C4-AAB7-EBE24CEEF1DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D6A7D6C-09F9-41C4-AAB7-EBE24CEEF1DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
