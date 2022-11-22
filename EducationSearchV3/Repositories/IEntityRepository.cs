@@ -3,7 +3,7 @@ using EducationSearchV3.Models;
 
 namespace EducationSearchV3.Repositories
 {
-    public interface IRepository<TEntity, TDto>
+    public interface IEntityRepository<TEntity, TDto> : IBaseRepository
     {
         Task<IEnumerable<TEntity>?> Create(TDto dto);
         Task<IEnumerable<TEntity>> GetAll();

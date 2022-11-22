@@ -1,9 +1,7 @@
 ﻿using EducationSearchV3.Data;
 using EducationSearchV3.Models;
 using EducationSearchV3.Models.Dtos;
-using EducationSearchV3.Models.Enums;
 using Microsoft.EntityFrameworkCore;
-using System.Data.SqlTypes;
 
 namespace EducationSearchV3.Repositories
 {
@@ -39,23 +37,10 @@ namespace EducationSearchV3.Repositories
             if (found)
                 return null;
 
-            // Create a list of languages, which will be added for a new country
-            List<Language> languages = new(dto.Languages.Count);
-
-            // Find the existing languages in data context by the given from dto id
-            foreach (var languageAsInt in dto.Languages)
-            {
-                var language = _context.Languages.FirstOrDefault(l => (int)l.Name == languageAsInt);
-                if (language == null)
-                    return null;
-
-                languages.Add(language);
-            }
-                        
             // Create new one
             var newCountry = new Country {
                 Name = dto.Name,
-                Languages = languages                
+                Languages = await GetLanguages(dto)
             };
 
             await _context.Countries.AddAsync(newCountry);
@@ -64,7 +49,6 @@ namespace EducationSearchV3.Repositories
                 .Include(c => c.Languages)
                 .Include(c => c.HighSchools)
                 .ToListAsync();
-
         }
 
         public async Task<IEnumerable<Country>?> Delete(int id)
@@ -93,8 +77,28 @@ namespace EducationSearchV3.Repositories
                 return null;
 
             countryToUpdate.Name = dto.Name;
+            countryToUpdate.Languages = await GetLanguages(dto);
             await _context.SaveChangesAsync();
             return countryToUpdate;
         }
+
+        private async Task<IEnumerable<Language>> GetLanguages(CountryDto dto)
+        {
+            // Create a list of languages, which will be added for a country
+            List<Language> languages = new(dto.LanguageIds.Count);
+
+            // Find the existing languages in data context by the given from dto id
+            foreach (var languageAsInt in dto.LanguageIds)
+            {
+                var language = await _context.Languages.FirstOrDefaultAsync(l => (int)l.Name == languageAsInt);
+                if (language == null)
+                    throw new ArgumentException($"The given language does not exist in the database: {languageAsInt}");
+
+                languages.Add(language);
+            }
+            return languages;
+        }
+
+
     }
 }

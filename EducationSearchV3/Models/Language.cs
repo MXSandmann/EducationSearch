@@ -8,6 +8,6 @@ namespace EducationSearchV3.Models
         [Key]
         public int Id { get; set; }
         public Languages Name { get; set; }
-        //public IEnumerable<Country>? Countries { get; set; }
+        //public IEnumerable<Country> Countries { get; set; }
     }
 }

@@ -2,8 +2,6 @@
 using EducationSearchV3.Models;
 using EducationSearchV3.Models.Dtos;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace EducationSearchV3.Repositories
 {
@@ -26,7 +24,7 @@ namespace EducationSearchV3.Repositories
 
         public async Task<IEnumerable<Subject>?> Create(SubjectDto dto)
         {
-            // Check first if the subject with the input name already exists
+            // Check first if the object with the input name already exists
             var found = await _context.Subjects.AnyAsync(s => s.Name == dto.Name);
 
             if (found)
@@ -41,7 +39,7 @@ namespace EducationSearchV3.Repositories
 
         public async Task<IEnumerable<Subject>?> Delete(int id)
         {
-            // Check first if the subject to delete exists
+            // Check first if the object to delete exists
             var foundSubject = await _context.Subjects.FindAsync(id);
 
             if (foundSubject == null)

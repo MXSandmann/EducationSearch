@@ -8,10 +8,8 @@ namespace EducationSearchV3.Data
     {
         public static void PrepPopulation(IApplicationBuilder app)
         {
-            using (var serviceScope = app.ApplicationServices.CreateScope())
-            {
-                SeedData(serviceScope.ServiceProvider.GetService<DataContext>()!);
-            }
+            using var serviceScope = app.ApplicationServices.CreateScope();
+            SeedData(serviceScope.ServiceProvider.GetService<DataContext>()!);
         }
 
         private static void SeedData(DataContext context)
@@ -78,6 +76,9 @@ namespace EducationSearchV3.Data
                 return;
 
             Console.WriteLine("-> Seeding languages data");
+
+            // Rewrite the table
+            context.Database.ExecuteSql($"TRUNCATE TABLE [Languages]");
 
             var languages = new List<Language>();
 
