@@ -74,9 +74,9 @@ namespace EducationSearchV3.Repositories
             return highSchoolToUpdate;
         }
 
-        private async Task<IEnumerable<EducationProgram>> GetPrograms(HighSchoolDto dto)
+        private async Task<ICollection<EducationProgram>> GetPrograms(HighSchoolDto dto)
         {
-            if (dto.ProgramIds == null) return Enumerable.Empty<EducationProgram>();
+            if (dto.ProgramIds == null) return Array.Empty<EducationProgram>();
 
             // Create a list of programs, which will be added for a high school
             List<EducationProgram> programs = new(dto.ProgramIds.Count);

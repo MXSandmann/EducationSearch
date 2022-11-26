@@ -1,13 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace EducationSearchV3.Models
+﻿namespace EducationSearchV3.Models
 {
-    public class Country
+    public class Country : Entity
     {
-        [Key]
-        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public IEnumerable<Language> Languages { get; set; } = null!;
-        public IEnumerable<HighSchool> HighSchools { get; set; } = null!;
+        public ICollection<Language> Languages { get; set; } = null!;
+        public ICollection<HighSchool> HighSchools { get; set; } = null!;
     }
 }

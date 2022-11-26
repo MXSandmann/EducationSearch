@@ -1,13 +1,10 @@
 ﻿using EducationSearchV3.Models.Enums;
-using System.ComponentModel.DataAnnotations;
 
 namespace EducationSearchV3.Models
 {
-    public class Language
+    public class Language : Entity
     {
-        [Key]
-        public int Id { get; set; }
         public Languages Name { get; set; }
-        //public IEnumerable<Country> Countries { get; set; }
+        //public ICollection<Country> Countries { get; set; } = null!;
     }
 }

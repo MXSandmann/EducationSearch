@@ -1,12 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace EducationSearchV3.Models
+﻿namespace EducationSearchV3.Models
 {
-    public class HighSchool
+    public class HighSchool : Entity
     {
-        [Key]
-        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public IEnumerable<EducationProgram> Programs { get; set; } = null!;
+        public ICollection<EducationProgram> Programs { get; set; } = null!;
     }
 }

@@ -18,9 +18,9 @@ namespace EducationSearchV3.Data
             context.Database.Migrate();
             try
             {
+                SeedLanguages(context);
                 SeedCountries(context);
                 SeedSubjects(context);
-                SeedLanguages(context);
             }
             catch (Exception ex)
             {
@@ -78,7 +78,7 @@ namespace EducationSearchV3.Data
             Console.WriteLine("-> Seeding languages data");
 
             // Rewrite the table
-            context.Database.ExecuteSql($"TRUNCATE TABLE [Languages]");
+            //context.Database.ExecuteSql($"TRUNCATE TABLE [Languages]");
 
             var languages = new List<Language>();
 

@@ -82,7 +82,7 @@ namespace EducationSearchV3.Repositories
             return countryToUpdate;
         }
 
-        private async Task<IEnumerable<Language>> GetLanguages(CountryDto dto)
+        private async Task<ICollection<Language>> GetLanguages(CountryDto dto)
         {
             // Create a list of languages, which will be added for a country
             List<Language> languages = new(dto.LanguageIds.Count);
