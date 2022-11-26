@@ -8,7 +8,7 @@ namespace EducationSearchV3.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<HighSchool> builder)
         {
-            builder.HasMany(hs => hs.Programs).WithOne(p => p.HighSchool);
+            builder.HasMany(hs => hs.Programs).WithOne(p => p.HighSchool);//.OnDelete(DeleteBehavior.SetNull);
             builder.ToTable("HighSchools");
         }
     }
