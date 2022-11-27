@@ -9,7 +9,7 @@ namespace EducationSearchV3.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Language> builder)
         {
-            //builder.HasMany(l => l.Countries).WithMany(c => c.Languages);
+            builder.HasMany(l => l.Countries).WithMany(c => c.Languages);
                 //.UsingEntity<Dictionary<string, object>>(
                 //"CountryLanguage",
                 //x => x.HasOne<Country>().WithMany().OnDelete(DeleteBehavior.SetNull),

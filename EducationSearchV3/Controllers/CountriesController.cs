@@ -1,4 +1,4 @@
-﻿using EducationSearchV3.Models.Dtos;
+﻿using EducationSearchV3.Models.Dtos.Requests;
 using EducationSearchV3.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +18,9 @@ namespace EducationSearchV3.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCountries()
         {
+            var countries = await _repository.GetAll();
+            if (countries is null) 
+                return NotFound($"No countries in the db");
             return Ok(await _repository.GetAll());
         }
 
@@ -25,18 +28,17 @@ namespace EducationSearchV3.Controllers
         public async Task<IActionResult> GetCountryById(int id)
         {
             var country = await _repository.GetById(id);
-            if (country == null)
+            if (country is null) 
                 return NotFound($"No country with id {id} could be found");
             return Ok(country);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCountry(CountryDto dto)
+        public async Task<IActionResult> CreateCountry(CreateUpdateCountryDto dto)
         {
             var newCountries = await _repository.Create(dto);
-            if (newCountries == null)
+            if (newCountries is null) 
                 return BadRequest($"The country with name {dto.Name} already exists");
-
             return Ok(newCountries);
         }
 
@@ -44,22 +46,18 @@ namespace EducationSearchV3.Controllers
         public async Task<IActionResult> DeleteCountry(int id)
         {
             var newCountries = await _repository.Delete(id);
-
-            if (newCountries == null)
+            if (newCountries is null) 
                 return NotFound($"The country with id {id} not found");
-
             return Ok(newCountries);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCountry(CountryDto dto)
+        public async Task<IActionResult> UpdateCountry(CreateUpdateCountryDto dto)
         {
-            var updatedSubject = await _repository.Update(dto);
-
-            if (updatedSubject == null)
-                return NotFound($"The subject with id {dto.Id} not found");
-
-            return Ok(updatedSubject);
+            var updated = await _repository.Update(dto);
+            if (updated is null) 
+                return NotFound($"The country with id {dto.Id} not found");
+            return Ok(updated);
         }
     } 
 }

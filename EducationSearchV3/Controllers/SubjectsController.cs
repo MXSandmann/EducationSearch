@@ -1,4 +1,4 @@
-using EducationSearchV3.Models.Dtos;
+using EducationSearchV3.Models.Dtos.Requests;
 using EducationSearchV3.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,25 +18,27 @@ namespace EducationSearchV3.Controllers
         [HttpGet]
         public async Task<IActionResult> GetSubjects()
         {
-            return Ok(await _repository.GetAll());
+            var subjects = await _repository.GetAll();
+            if(subjects is null)
+                return NotFound("No subjects in the db");
+            return Ok(subjects);
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetSubjectById(int id)
         {
             var subject = await _repository.GetById(id);
-            if(subject == null)
+            if (subject is null)
                 return NotFound($"No subject with id {id} could be found");
             return Ok(subject);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateSubject(SubjectDto dto)
+        public async Task<IActionResult> CreateSubject(CreateUpdateSubjectDto dto)
         {
             var newSubjects = await _repository.Create(dto);
-            if (newSubjects == null)
+            if (newSubjects is null)
                 return BadRequest($"The subject with name {dto.Name} already exists");
-
             return Ok(newSubjects);
         }
 
@@ -44,22 +46,18 @@ namespace EducationSearchV3.Controllers
         public async Task<IActionResult> DeleteSubject(int id)
         {
             var newSubjects = await _repository.Delete(id);
-
-            if (newSubjects == null)
+            if (newSubjects is null)
                 return NotFound($"The subject with id {id} not found");
-
             return Ok(newSubjects);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateSubject(SubjectDto dto)
+        public async Task<IActionResult> UpdateSubject(CreateUpdateSubjectDto dto)
         {
-            var updatedSubject = await _repository.Update(dto);
-
-            if (updatedSubject == null)
+            var updated = await _repository.Update(dto);
+            if (updated is null)
                 return NotFound($"The subject with id {dto.Id} not found");
-
-            return Ok(updatedSubject);
+            return Ok(updated);
         }
     }
 }

@@ -12,8 +12,8 @@ namespace EducationSearchV3.Data.Configurations
             //    .UsingEntity<Dictionary<string, object>>("CountryLanguage",
             //    x => x.HasOne<Language>().WithMany().OnDelete(DeleteBehavior.Cascade),
             //    x => x.HasOne<Country>().WithMany().OnDelete(DeleteBehavior.Cascade));
-            builder.HasMany(c => c.Languages);
-            builder.HasMany(c => c.HighSchools);
+            builder.HasMany(c => c.Languages).WithMany(l => l.Countries);
+            builder.HasMany(c => c.HighSchools).WithOne(h => h.Country);
             builder.ToTable("Countries");
         }
     }

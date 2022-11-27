@@ -13,10 +13,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddEntities();
-//builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
-//builder.Services.AddScoped<ICountryRepository, CountryRepository>();
-//builder.Services.AddScoped<IHighSchoolRepository, HighSchoolRepository>();
+//builder.Services.AddEntities();
+builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
+builder.Services.AddScoped<ICountryRepository, CountryRepository>();
+builder.Services.AddScoped<IHighSchoolRepository, HighSchoolRepository>();
 
 
 var app = builder.Build();
