@@ -1,6 +1,6 @@
 using EducationSearchV3.Data;
-using EducationSearchV3.Extensions;
 using EducationSearchV3.Repositories;
+using EducationSearchV3.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,9 +14,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 //builder.Services.AddEntities();
+
 builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
 builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 builder.Services.AddScoped<IHighSchoolRepository, HighSchoolRepository>();
+builder.Services.AddScoped<IEducationProgramRepository, EducationProgramRepository>();
+
+builder.Services.AddScoped<ISubjectService, SubjectService>();
 
 
 var app = builder.Build();

@@ -1,14 +1,14 @@
-﻿using EducationSearchV3.Models.Dtos.Requests;
-using EducationSearchV3.Models.Dtos.Responses;
+﻿using EducationSearchV3.Models;
 
 namespace EducationSearchV3.Repositories
 {
     public interface ISubjectRepository
     {
-        Task<IEnumerable<GetSubjectDto>?> Create(CreateUpdateSubjectDto dto);
-        Task<IEnumerable<GetSubjectDto>?> GetAll();
-        Task<GetSubjectDto?> GetById(int id);
-        Task<GetSubjectDto?> Update(CreateUpdateSubjectDto dto);
-        Task<IEnumerable<GetSubjectDto>?> Delete(int id);
+        public Task<List<Subject>> GetAllSubjects();
+        public Task<Subject?> GetSubjectById(int id);
+        public Task<bool> HasSubjectWithName(string name);
+        public Task AddSubject(Subject subject);
+        public Task RemoveSubject(Subject subject);
+        public Task SaveChangesAsync();
     }
 }
