@@ -54,7 +54,6 @@ namespace EducationSearchV3Test.Repositories.Subjects
         public async Task GetAll_ShouldReturnSubject_WithDependents()
         {
             // Arrange
-
             var subjects = GetAllSubjectsWithDependents();
             var name = subjects.First().Programs!.First().Name;
             _subjectRepoMock.Setup(x => x.GetAllSubjects()).
@@ -64,10 +63,40 @@ namespace EducationSearchV3Test.Repositories.Subjects
 
             // Assert
             result!.ToList().Count.ShouldBe(1);            
-            result!.SelectMany(x => x.Programs!).ShouldAllBe(x => x == name);
-            
-
+            result!.SelectMany(x => x.Programs!).ShouldAllBe(x => x == name);       
         }
+
+        [Fact]
+        public async Task GetSubjectByID_ShouldReturnSubject_WhenFound()
+        {
+            // Arrange
+            var id = new Random().Next();
+            _subjectRepoMock.Setup(x => x.GetSubjectById(It.IsAny<int>()))
+                .ReturnsAsync(() => new Subject { Id = id, Name = "Test1", Programs = CreateEducationPrograms()});
+
+            // Act
+            var result = await _sut.GetById(id);
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.Id.ShouldBe(id);
+            result.Programs.ShouldNotBeEmpty();
+        }
+
+        [Fact]
+        public async Task GetSubjectByID_ShouldReturnNull_WhenNotFound()
+        {
+            // Arrange            
+            _subjectRepoMock.Setup(x => x.GetSubjectById(It.IsAny<int>()))
+                .ReturnsAsync(() => null);
+
+            // Act
+            var result = await _sut.GetById(new Random().Next());
+
+            // Assert
+            result.ShouldBeNull();            
+        }
+               
 
         private static List<Subject> GetAllSubjects() => new()
         {
