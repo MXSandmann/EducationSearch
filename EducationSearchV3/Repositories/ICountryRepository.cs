@@ -1,14 +1,15 @@
-﻿using EducationSearchV3.Models.Dtos.Requests;
-using EducationSearchV3.Models.Dtos.Responses;
+﻿using EducationSearchV3.Models;
 
 namespace EducationSearchV3.Repositories
 {
-    public interface ICountryRepository 
+    public interface ICountryRepository
     {
-        Task<IEnumerable<GetCountryDto>?> Create(CreateUpdateCountryDto dto);
-        Task<IEnumerable<GetCountryDto>?> GetAll();
-        Task<GetCountryDto?> GetById(int id);
-        Task<GetCountryDto?> Update(CreateUpdateCountryDto dto);
-        Task<IEnumerable<GetCountryDto>?> Delete(int id);
+        public Task<List<Country>> GetAllCountries();
+        public Task<Country?> GetCountryById(int id);
+        public Task<Country?> GetCountryByName(string name);
+        public Task<bool> HasCountryWithName(string name);
+        public Task AddCountry(Country country);
+        public Task RemoveCountry(Country country);
+        public Task SaveChangesAsync();
     }
 }

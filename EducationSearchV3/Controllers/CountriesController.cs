@@ -1,5 +1,5 @@
 ﻿using EducationSearchV3.Models.Dtos.Requests;
-using EducationSearchV3.Repositories;
+using EducationSearchV3.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationSearchV3.Controllers
@@ -8,26 +8,26 @@ namespace EducationSearchV3.Controllers
     [Route("api/[controller]")]
     public class CountriesController : ControllerBase
     {
-        private readonly ICountryRepository _repository;
+        private readonly ICountryService _countryService;
 
-        public CountriesController(ICountryRepository repository)
+        public CountriesController(ICountryService countryService)
         {
-            _repository = repository;
+            _countryService = countryService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetCountries()
         {
-            var countries = await _repository.GetAll();
+            var countries = await _countryService.GetAll();
             if (countries is null) 
                 return NotFound($"No countries in the db");
-            return Ok(await _repository.GetAll());
+            return Ok(await _countryService.GetAll());
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetCountryById(int id)
         {
-            var country = await _repository.GetById(id);
+            var country = await _countryService.GetById(id);
             if (country is null) 
                 return NotFound($"No country with id {id} could be found");
             return Ok(country);
@@ -36,7 +36,7 @@ namespace EducationSearchV3.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCountry(CreateUpdateCountryDto dto)
         {
-            var newCountries = await _repository.Create(dto);
+            var newCountries = await _countryService.Create(dto);
             if (newCountries is null) 
                 return BadRequest($"The country with name {dto.Name} already exists");
             return Ok(newCountries);
@@ -45,7 +45,7 @@ namespace EducationSearchV3.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteCountry(int id)
         {
-            var newCountries = await _repository.Delete(id);
+            var newCountries = await _countryService.Delete(id);
             if (newCountries is null) 
                 return NotFound($"The country with id {id} not found");
             return Ok(newCountries);
@@ -54,7 +54,7 @@ namespace EducationSearchV3.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateCountry(CreateUpdateCountryDto dto)
         {
-            var updated = await _repository.Update(dto);
+            var updated = await _countryService.Update(dto);
             if (updated is null) 
                 return NotFound($"The country with id {dto.Id} not found");
             return Ok(updated);

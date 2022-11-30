@@ -12,7 +12,7 @@ namespace EducationSearchV3.Repositories
             _context = dataContext;
         }
 
-        public async Task<EducationProgram?> GetSubjectById(int id)
+        public async Task<EducationProgram?> GetProgramById(int id)
         {
             return await _context.EducationPrograms.FirstOrDefaultAsync(p => p.Id == id);
         }

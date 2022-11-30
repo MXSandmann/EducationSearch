@@ -4,6 +4,6 @@ namespace EducationSearchV3.Repositories
 {
     public interface IEducationProgramRepository
     {
-        public Task<EducationProgram?> GetSubjectById(int id);
+        public Task<EducationProgram?> GetProgramById(int id);
     }
 }

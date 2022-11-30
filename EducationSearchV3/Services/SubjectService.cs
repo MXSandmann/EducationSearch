@@ -117,7 +117,7 @@ namespace EducationSearchV3.Services
 
             foreach (var programId in dto.ProgramIds)
             {
-                var program = await _educationProgramRepository.GetSubjectById(programId);
+                var program = await _educationProgramRepository.GetProgramById(programId);
                 if (program is null)
                     throw new ArgumentException($"The given educations program with id {programId} does not exist in db");
 

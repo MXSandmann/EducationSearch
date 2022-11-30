@@ -1,6 +1,5 @@
 ﻿using EducationSearchV3.Data;
 using EducationSearchV3.Models;
-using EducationSearchV3.Models.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace EducationSearchV3.Repositories
@@ -8,90 +7,48 @@ namespace EducationSearchV3.Repositories
     public class HighSchoolRepository : IHighSchoolRepository
     {
         private readonly DataContext _context;
+
         public HighSchoolRepository(DataContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<HighSchool>> GetAll()
+        public async Task AddHighSchool(HighSchool hs)
         {
-            return await _context.HighSchools.Include(h => h.Programs).ToListAsync();
+            await _context.HighSchools.AddAsync(hs);
+            await SaveChangesAsync();
         }
 
-        public async Task<HighSchool?> GetById(int id)
+        public async Task<List<HighSchool>> GetAllHighSchools()
         {
-            return await _context.HighSchools.Include(h => h.Programs).FirstOrDefaultAsync(h => h.Id == id);
-        }
-
-        public async Task<IEnumerable<HighSchool>?> Create(HighSchoolDto dto)
-        {
-            // Check first if the object with the input name already exists
-            var found = await _context.HighSchools.AnyAsync(s => s.Name == dto.Name);
-
-            if (found)
-                return null;
-
-            // Create new one
-            var newHighSchool = new HighSchool
-            {
-                Name = dto.Name,
-                Programs = await GetPrograms(dto)
-            };
-            await _context.HighSchools.AddAsync(newHighSchool);
-            await _context.SaveChangesAsync();
             return await _context.HighSchools
-                .Include(s => s.Programs)
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<HighSchool>?> Delete(int id)
-        {
-            // Check first if the object to delete exists
-            var foundHighSchool = await _context.HighSchools.FindAsync(id);
-
-            if (foundHighSchool == null)
-                return null;
-
-            _context.HighSchools.Remove(foundHighSchool);
-            await _context.SaveChangesAsync();
-            return await _context.HighSchools
+                .Include(h => h.Country)
                 .Include(h => h.Programs)
                 .ToListAsync();
-        }               
-
-        public async Task<HighSchool?> Update(HighSchoolDto dto)
-        {
-            // Check first if the object to update exists
-            var highSchoolToUpdate = await _context.HighSchools
-                .FirstOrDefaultAsync(h => h.Id == dto.Id);
-
-            if (highSchoolToUpdate == null)
-                return null;
-
-            highSchoolToUpdate.Name = dto.Name;
-            highSchoolToUpdate.Programs = await GetPrograms(dto);
-            await _context.SaveChangesAsync();
-            return highSchoolToUpdate;
         }
 
-        private async Task<ICollection<EducationProgram>> GetPrograms(HighSchoolDto dto)
+        public async Task<HighSchool?> GetHighSchoolById(int id)
         {
-            if (dto.ProgramIds == null) return Array.Empty<EducationProgram>();
+            return await _context.HighSchools
+                .Include(h => h.Country)
+                .Include(h => h.Programs)
+                .FirstOrDefaultAsync(h => h.Id == id);
+        }
 
-            // Create a list of programs, which will be added for a high school
-            List<EducationProgram> programs = new(dto.ProgramIds.Count);
+        public async Task<bool> HasHighSchoolWithName(string name)
+        {
+            return await _context.HighSchools.AnyAsync(h => h.Name == name);
+        }
 
-            // Find the existing languages in data context by the given from dto id
-            foreach (var programId in dto.ProgramIds)
-            {
-                var program = await _context.EducationPrograms
-                    .FirstOrDefaultAsync(p => p.Id == programId);
-                if (program == null)
-                    throw new ArgumentException($"The given education program does not exist in the databese: {programId}");
+        public async Task RemoveHighSchool(HighSchool hs)
+        {
+            _context.HighSchools.Remove(hs);
+            await SaveChangesAsync();
+        }
 
-                programs.Add(program);
-            }
-            return programs;
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

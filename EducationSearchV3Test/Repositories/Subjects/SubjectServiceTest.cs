@@ -27,7 +27,7 @@ namespace EducationSearchV3Test.Repositories.Subjects
         {
             // Arrange            
             _subjectRepoMock.Setup(x => x.GetAllSubjects()).
-                ReturnsAsync(() => null);
+                ReturnsAsync(() => null!);
             // Act
             var result = await _sut.GetAll();
 
@@ -132,15 +132,17 @@ namespace EducationSearchV3Test.Repositories.Subjects
 
         private static ICollection<EducationProgram> CreateEducationPrograms()
         {
-            var programs = new List<EducationProgram>(1);            
-            programs.Add(new EducationProgram
+            var programs = new List<EducationProgram>(1)
             {
-                Id = 99,
-                Name = "Grreat",
-                StudyLevel = StudyLevels.Bachelor,
-                Requirements = "blabla",
-                EducationForm = EducationsForms.OnCampus
-            });
+                new EducationProgram
+                {
+                    Id = 99,
+                    Name = "Grreat",
+                    StudyLevel = StudyLevels.Bachelor,
+                    Requirements = "blabla",
+                    EducationForm = EducationsForms.OnCampus
+                }
+            };
             return programs;
         }
     }
