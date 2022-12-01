@@ -16,13 +16,15 @@ builder.Services.AddDbContext<DataContext>(options =>
 //builder.Services.AddEntities();
 
 builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
-builder.Services.AddScoped<EducationSearchV3.Repositories.ICountryRepository, CountryRepository>();
+builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 builder.Services.AddScoped<IHighSchoolRepository, HighSchoolRepository>();
 builder.Services.AddScoped<IEducationProgramRepository, EducationProgramRepository>();
+builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
 
 builder.Services.AddScoped<ISubjectService, SubjectService>();
 builder.Services.AddScoped<IHighSchoolService, HighSchoolService>();
-builder.Services.AddScoped<EducationSearchV3.Services.ICountryService, CountryService>();
+builder.Services.AddScoped<ICountryService, CountryService>();
+builder.Services.AddScoped<IEducationProgramService, EducationProgramService>();
 
 
 var app = builder.Build();

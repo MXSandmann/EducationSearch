@@ -89,10 +89,7 @@ namespace EducationSearchV3.Services
         {
             // Check first if the object to delete exists
             var foundCountry = await _countryRepository.GetCountryById(id);
-
-            if (foundCountry is null)
-                return null;
-
+            if (foundCountry is null) return null;
             await _countryRepository.RemoveCountry(foundCountry);            
             return await GetAllCountriesWithDependendentsAsync();
         }
