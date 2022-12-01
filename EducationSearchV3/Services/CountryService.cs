@@ -3,13 +3,12 @@ using EducationSearchV3.Models;
 using EducationSearchV3.Models.Dtos.Requests;
 using EducationSearchV3.Models.Dtos.Responses;
 using EducationSearchV3.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 namespace EducationSearchV3.Services
 {
     public class CountryService : ICountryService
     {
-        private readonly Repositories.ICountryRepository _countryRepository;
+        private readonly ICountryRepository _countryRepository;
         private readonly ILanguageRepository _languageRepository;
         private readonly IHighSchoolRepository _highSchoolRepository;
 

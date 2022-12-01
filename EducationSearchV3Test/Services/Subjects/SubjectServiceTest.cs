@@ -6,7 +6,7 @@ using EducationSearchV3.Services;
 using Moq;
 using Shouldly;
 
-namespace EducationSearchV3Test.Repositories.Subjects
+namespace EducationSearchV3Test.Services.Subjects
 {
     public class SubjectServiceTest
     {
@@ -35,7 +35,7 @@ namespace EducationSearchV3Test.Repositories.Subjects
             // Assert
             result.ShouldBeNull();
         }
-              
+
         [Fact]
         public async Task GetAll_ShouldReturnSubject_WithDependents()
         {
@@ -48,8 +48,8 @@ namespace EducationSearchV3Test.Repositories.Subjects
             var result = await _sut.GetAll();
 
             // Assert
-            result!.ToList().Count.ShouldBe(3);            
-            result!.SelectMany(x => x.Programs!).ShouldAllBe(x => x == name);       
+            result!.ToList().Count.ShouldBe(3);
+            result!.SelectMany(x => x.Programs!).ShouldAllBe(x => x == name);
         }
 
         [Fact]
@@ -58,7 +58,7 @@ namespace EducationSearchV3Test.Repositories.Subjects
             // Arrange
             var id = new Random().Next();
             _subjectRepoMock.Setup(x => x.GetSubjectById(It.IsAny<int>()))
-                .ReturnsAsync(() => new Subject { Id = id, Name = "Test1", Programs = CreateEducationPrograms()});
+                .ReturnsAsync(() => new Subject { Id = id, Name = "Test1", Programs = CreateEducationPrograms() });
 
             // Act
             var result = await _sut.GetById(id);
@@ -80,7 +80,7 @@ namespace EducationSearchV3Test.Repositories.Subjects
             var result = await _sut.GetById(new Random().Next());
 
             // Assert
-            result.ShouldBeNull();            
+            result.ShouldBeNull();
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace EducationSearchV3Test.Repositories.Subjects
             var results = await _sut.Create(GetTestDataSubjectDtos().First());
 
             // Assert
-            results.ShouldNotBeNull();            
+            results.ShouldNotBeNull();
         }
 
         [Fact]
@@ -114,7 +114,7 @@ namespace EducationSearchV3Test.Repositories.Subjects
             _programRepoMock.Setup(x => x.GetProgramById(It.IsAny<int>())).ReturnsAsync(() => null);
             // Act
             // Assert
-            Should.Throw<ArgumentException>(async () => await _sut.Create(GetTestDataSubjectDtos().First()));            
+            Should.Throw<ArgumentException>(async () => await _sut.Create(GetTestDataSubjectDtos().First()));
         }
 
         [Fact]
@@ -193,7 +193,7 @@ namespace EducationSearchV3Test.Repositories.Subjects
         {
             // Arrange
             var pr = CreateEducationPrograms().First();
-            var dto = GetTestDataSubjectDtos().Last();            
+            var dto = GetTestDataSubjectDtos().Last();
             _subjectRepoMock.Setup(x => x.SaveChangesAsync()).Verifiable();
             _subjectRepoMock.Setup(x => x.GetSubjectById(It.IsAny<int>()))
                 .ReturnsAsync(() => null);
