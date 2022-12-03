@@ -1,8 +1,9 @@
 using EducationSearchV3.Models;
 using EducationSearchV3.Models.Dtos.Requests;
 using EducationSearchV3.Models.Enums;
-using EducationSearchV3.Repositories;
+using EducationSearchV3.Repositories.Contracts;
 using EducationSearchV3.Services;
+using EducationSearchV3.Services.Contracts;
 using Moq;
 using Shouldly;
 

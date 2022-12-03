@@ -1,5 +1,5 @@
 ﻿using EducationSearchV3.Models;
-using EducationSearchV3.Repositories;
+using EducationSearchV3.Repositories.Contracts;
 using System.Reflection;
 
 namespace EducationSearchV3.Extensions

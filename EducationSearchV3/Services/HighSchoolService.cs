@@ -1,7 +1,8 @@
 ﻿using EducationSearchV3.Models;
 using EducationSearchV3.Models.Dtos.Requests;
 using EducationSearchV3.Models.Dtos.Responses;
-using EducationSearchV3.Repositories;
+using EducationSearchV3.Repositories.Contracts;
+using EducationSearchV3.Services.Contracts;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,9 +11,9 @@ namespace EducationSearchV3.Services
     public class HighSchoolService : IHighSchoolService
     {
         private readonly IHighSchoolRepository _highSchoolRepository;
-        private readonly Repositories.ICountryRepository _countryRepository;
+        private readonly ICountryRepository _countryRepository;
         private readonly IEducationProgramRepository _educationProgramRepository;
-        public HighSchoolService(IHighSchoolRepository highSchoolRepository, Repositories.ICountryRepository countryRepository, IEducationProgramRepository educationProgramRepository)
+        public HighSchoolService(IHighSchoolRepository highSchoolRepository, ICountryRepository countryRepository, IEducationProgramRepository educationProgramRepository)
         {
             _highSchoolRepository = highSchoolRepository;
             _countryRepository = countryRepository;

@@ -1,5 +1,6 @@
 ﻿using EducationSearchV3.Data;
 using EducationSearchV3.Models;
+using EducationSearchV3.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace EducationSearchV3.Repositories
@@ -29,7 +30,11 @@ namespace EducationSearchV3.Repositories
 
         public async Task<EducationProgram?> GetProgramById(int id)
         {
-            return await _context.EducationPrograms.FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.EducationPrograms
+                .Include(e => e.Languages)
+                .Include(e => e.Subjects)
+                .Include(e => e.HighSchool)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<bool> HasProgramWithName(string name)

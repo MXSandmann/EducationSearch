@@ -1,5 +1,5 @@
 using EducationSearchV3.Models.Dtos.Requests;
-using EducationSearchV3.Services;
+using EducationSearchV3.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationSearchV3.Controllers

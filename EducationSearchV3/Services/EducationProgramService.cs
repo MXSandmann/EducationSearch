@@ -1,8 +1,11 @@
-﻿using EducationSearchV3.Models;
+﻿using EducationSearchV3.Extensions;
+using EducationSearchV3.Models;
 using EducationSearchV3.Models.Dtos.Requests;
 using EducationSearchV3.Models.Dtos.Responses;
 using EducationSearchV3.Models.Enums;
-using EducationSearchV3.Repositories;
+using EducationSearchV3.Repositories.Contracts;
+using EducationSearchV3.Services.Contracts;
+using System.Diagnostics.CodeAnalysis;
 
 namespace EducationSearchV3.Services
 {
@@ -71,7 +74,7 @@ namespace EducationSearchV3.Services
             return result;              
         }
 
-        public async Task<IEnumerable<GetEPDto>?> Create(CreateUpdateEPDto dto)
+        public async Task<IEnumerable<GetEPDto>?> Create(CreateEPDto dto)
         {
             var found = await _educationProgramRepository.HasProgramWithName(dto.Name);
             if (found) return null;
@@ -82,8 +85,8 @@ namespace EducationSearchV3.Services
                 Requirements = dto.Requirements,
                 HighSchool = await FindHighSchoolForDBAsync(dto.HighSchoolId),
                 StudyLevel = ParseToEntity<StudyLevels>(dto.StudyLevel),
-                Languages = await FindLanguagesForDBAsync(dto),
-                Subjects = await FindSubjectsForDBAsync(dto)
+                Languages = await FindLanguagesForDBAsync(dto.LanguageIds),
+                Subjects = await FindSubjectsForDBAsync(dto.SubjectIds)
             };
             await _educationProgramRepository.AddProgram(newProgram);
             return await GetAllProgramsWithDependentsAsync();            
@@ -113,9 +116,31 @@ namespace EducationSearchV3.Services
             return await GetAllProgramsWithDependentsAsync();
         }          
 
-        public async Task<GetEPDto?> Update(CreateUpdateEPDto dto)
-        {
-            throw new NotImplementedException();
+        public async Task<GetEPDto?> Update(UpdateEPDto dto)
+        {            
+            var epToUpdate = await _educationProgramRepository.GetProgramById(dto.Id);
+            if(epToUpdate is null) return null;
+
+            if(!string.IsNullOrWhiteSpace(dto.Name))
+                epToUpdate.Name = dto.Name;
+            if(dto.EducationForm is not null)
+                epToUpdate.EducationForm = ParseToEntity<EducationsForms>(dto.EducationForm.Value);
+            if(!string.IsNullOrWhiteSpace(dto.Requirements))
+                epToUpdate.Requirements = dto.Requirements;
+            if (dto.HighSchoolId is not null)
+                epToUpdate.HighSchool = await FindHighSchoolForDBAsync(dto.HighSchoolId.Value);
+            if (dto.StudyLevel is not null)
+                epToUpdate.StudyLevel = ParseToEntity<StudyLevels>(dto.StudyLevel.Value);
+            var newLanguages = await FindLanguagesForDBAsync(dto.LanguageIds);
+            if(newLanguages.Any())
+                epToUpdate.Languages.Replace(newLanguages);
+            var newSubjects = await FindSubjectsForDBAsync(dto.SubjectIds);
+            if (newSubjects.Any())
+                epToUpdate.Subjects.Replace(newSubjects);
+
+            await _educationProgramRepository.SaveChangesAsync();
+            Console.WriteLine($"--> DEBUG: epToUpdate.Id : {epToUpdate.Id}");
+            return await GetOneProgramWithDependentsAsync(epToUpdate.Id);
         }
 
         private static IEnumerable<string> GetLanguageNames(EducationProgram program)
@@ -136,16 +161,16 @@ namespace EducationSearchV3.Services
             return subjectNames;
         }
 
-        private async Task<ICollection<Language>> FindLanguagesForDBAsync(CreateUpdateEPDto dto)
+        private async Task<ICollection<Language>> FindLanguagesForDBAsync(IEnumerable<int>? ids)
         {
             // Null check
-            if (dto.LanguageIds is null) return Array.Empty<Language>();
+            if (ids is null) return Array.Empty<Language>();
 
             // Create a list of languages, which will be added for a country
-            List<Language> languages = new(dto.LanguageIds.ToList().Count);
+            List<Language> languages = new(ids.ToList().Count);
 
             // Find the existing languages in data context by the given from dto id
-            foreach (var languageAsInt in dto.LanguageIds)
+            foreach (var languageAsInt in ids)
             {
                 var language = await _languageRepository.GetLanguageById(languageAsInt);
                 if (language is null)
@@ -155,11 +180,11 @@ namespace EducationSearchV3.Services
             return languages;
         }
 
-        private async Task<ICollection<Subject>> FindSubjectsForDBAsync(CreateUpdateEPDto dto)
+        private async Task<ICollection<Subject>> FindSubjectsForDBAsync(IEnumerable<int>? ids)
         {
-            if (dto.SubjectIds is null) return Array.Empty<Subject>();
-            List<Subject> subjects = new(dto.SubjectIds.ToList().Count);
-            foreach (var subjectId in dto.SubjectIds)
+            if (ids is null) return Array.Empty<Subject>();
+            List<Subject> subjects = new(ids.ToList().Count);
+            foreach (var subjectId in ids)
             {
                 var subject = await _subjectRepository.GetSubjectById(subjectId);
                 if (subject is null)

@@ -1,5 +1,5 @@
 ﻿using EducationSearchV3.Models.Dtos.Requests;
-using EducationSearchV3.Services;
+using EducationSearchV3.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 
@@ -35,7 +35,7 @@ namespace EducationSearchV3.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateEducationProgram(CreateUpdateEPDto dto)
+        public async Task<IActionResult> CreateEducationProgram(CreateEPDto dto)
         {
             var newPrograms = await _service.Create(dto);
             if (newPrograms is null)
@@ -53,7 +53,7 @@ namespace EducationSearchV3.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateEducationProgram(CreateUpdateEPDto dto)
+        public async Task<IActionResult> UpdateEducationProgram(UpdateEPDto dto)
         {
             var updated = await _service.Update(dto);
             if (updated is null)

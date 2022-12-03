@@ -1,5 +1,6 @@
 ﻿using EducationSearchV3.Data;
 using EducationSearchV3.Models;
+using EducationSearchV3.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace EducationSearchV3.Repositories

@@ -1,6 +1,8 @@
 using EducationSearchV3.Data;
 using EducationSearchV3.Repositories;
+using EducationSearchV3.Repositories.Contracts;
 using EducationSearchV3.Services;
+using EducationSearchV3.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

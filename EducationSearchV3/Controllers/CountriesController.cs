@@ -1,5 +1,5 @@
 ﻿using EducationSearchV3.Models.Dtos.Requests;
-using EducationSearchV3.Services;
+using EducationSearchV3.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationSearchV3.Controllers
@@ -21,7 +21,7 @@ namespace EducationSearchV3.Controllers
             var countries = await _countryService.GetAll();
             if (countries is null) 
                 return NotFound($"No countries in the db");
-            return Ok(await _countryService.GetAll());
+            return Ok(countries);
         }
 
         [HttpGet("{id:int}")]

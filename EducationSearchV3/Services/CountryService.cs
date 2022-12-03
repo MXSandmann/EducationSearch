@@ -2,7 +2,8 @@
 using EducationSearchV3.Models;
 using EducationSearchV3.Models.Dtos.Requests;
 using EducationSearchV3.Models.Dtos.Responses;
-using EducationSearchV3.Repositories;
+using EducationSearchV3.Repositories.Contracts;
+using EducationSearchV3.Services.Contracts;
 
 namespace EducationSearchV3.Services
 {
@@ -12,7 +13,7 @@ namespace EducationSearchV3.Services
         private readonly ILanguageRepository _languageRepository;
         private readonly IHighSchoolRepository _highSchoolRepository;
 
-        public CountryService(Repositories.ICountryRepository countryRepository, ILanguageRepository languageRepository, IHighSchoolRepository highSchoolRepository)
+        public CountryService(ICountryRepository countryRepository, ILanguageRepository languageRepository, IHighSchoolRepository highSchoolRepository)
         {
             _countryRepository = countryRepository;
             _languageRepository = languageRepository;
@@ -115,7 +116,7 @@ namespace EducationSearchV3.Services
                 countryToUpdate.HighSchools.Replace(newHSs);
 
             await _countryRepository.SaveChangesAsync();
-            return await GetOneCountryWithDependentsAsync(dto.Id.Value);
+            return await GetOneCountryWithDependentsAsync(countryToUpdate.Id);
         }
 
         private async Task<ICollection<Language>> FindLanguagesForDBAsync(CreateUpdateCountryDto dto)

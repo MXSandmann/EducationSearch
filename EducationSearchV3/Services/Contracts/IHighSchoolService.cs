@@ -1,7 +1,7 @@
 ﻿using EducationSearchV3.Models.Dtos.Requests;
 using EducationSearchV3.Models.Dtos.Responses;
 
-namespace EducationSearchV3.Services
+namespace EducationSearchV3.Services.Contracts
 {
     public interface IHighSchoolService
     {

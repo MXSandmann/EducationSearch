@@ -1,6 +1,6 @@
 ﻿using EducationSearchV3.Models;
 
-namespace EducationSearchV3.Repositories
+namespace EducationSearchV3.Repositories.Contracts
 {
     public interface ILanguageRepository
     {
