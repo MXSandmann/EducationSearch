@@ -43,7 +43,7 @@ namespace EducationSearchV3Test.Services.Countries
         }
 
         [Fact]
-        public async Task GetAll_ShouldReturnSubject_WithDependents()
+        public async Task GetAll_ShouldReturnCountry_WithDependents()
         {
             // Arrange
             var countries = GetTestDataCountries();
@@ -57,6 +57,54 @@ namespace EducationSearchV3Test.Services.Countries
             result!.ToList().Count.ShouldBe(2);
             result!.SelectMany(x => x.HighSchools!).ShouldAllBe(x => x == name);
         }
+
+        [Fact]
+        public async Task GetCountryById_ShouldReturnCountry_WhenFound()
+        {
+            // Arrange            
+            _countryRepoMock.Setup(x => x.GetCountryById(It.IsAny<int>()))
+                .ReturnsAsync(GetTestDataCountries().First());
+
+            // Act
+            var result = await _sut.GetById(new Random().Next());
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.Languages.ShouldNotBeEmpty();
+            result.HighSchools.ShouldNotBeEmpty();
+        }
+
+        [Fact]
+        public async Task GetCountryById_ShouldReturnNull_WhenNotFound()
+        {
+            // Arrange            
+            _countryRepoMock.Setup(x => x.GetCountryById(It.IsAny<int>()))
+                .ReturnsAsync(() => null);
+
+            // Act
+            var result = await _sut.GetById(new Random().Next());
+
+            // Assert
+            result.ShouldBeNull();
+        }
+
+        //[Fact]
+        //public async Task CreateCountry_ShouldSuccess_WhenNotFound()
+        //{
+        //    // Arrange            
+        //    _countryRepoMock.Setup(x => x.HasCountryWithName(It.IsAny<string>()))
+        //        .ReturnsAsync(false);
+        //    _countryRepoMock.Setup(x => x.AddCountry(It.IsAny<Country>()))
+        //        .Verifiable();
+        //    _countryRepoMock.Setup(x => x.GetAllCountries())
+        //        .ReturnsAsync(GetTestDataCountries());
+
+        //    // Act
+        //    var result = await _sut.Create()
+
+
+        //    // Assert
+        //}
 
         private static List<Country> GetTestDataCountries() => new(2)
         {

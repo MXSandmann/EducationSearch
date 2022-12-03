@@ -94,7 +94,7 @@ namespace EducationSearchV3Test.Services.Subjects
                 .ReturnsAsync(false);
             _subjectRepoMock.Setup(x => x.AddSubject(It.IsAny<Subject>())).Verifiable();
             _subjectRepoMock.Setup(x => x.GetAllSubjects()).
-                ReturnsAsync(() => GetTestDataSubjects());
+                ReturnsAsync(GetTestDataSubjects());
             _programRepoMock.Setup(x => x.GetProgramById(It.IsAny<int>())).ReturnsAsync(pr);
             // Act
             var results = await _sut.Create(GetTestDataSubjectDtos().First());
