@@ -27,6 +27,7 @@ builder.Services.AddScoped<ISubjectService, SubjectService>();
 builder.Services.AddScoped<IHighSchoolService, HighSchoolService>();
 builder.Services.AddScoped<ICountryService, CountryService>();
 builder.Services.AddScoped<IEducationProgramService, EducationProgramService>();
+builder.Services.AddScoped<ILanguageService, LanguageService>();
 
 
 var app = builder.Build();

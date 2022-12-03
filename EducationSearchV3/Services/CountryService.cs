@@ -27,11 +27,8 @@ namespace EducationSearchV3.Services
         private async Task<IEnumerable<GetCountryDto>?> GetAllCountriesWithDependendentsAsync()
         {
             var countries = await _countryRepository.GetAllCountries();
-
             if (countries is null) return null;
-
             var results = new List<GetCountryDto>(countries.Count);
-
             foreach (var country in countries)
             {
                 results.Add(
@@ -54,9 +51,7 @@ namespace EducationSearchV3.Services
         private async Task<GetCountryDto?> GetOneCountryWithDependentsAsync(int id)
         {
             var country = await _countryRepository.GetCountryById(id);
-
             if (country is null) return null;
-
             var result = new GetCountryDto
             {
                 Id = country.Id,
@@ -64,7 +59,6 @@ namespace EducationSearchV3.Services
                 Languages = GetLanguageNames(country),
                 HighSchools = GetHighSchoolNames(country)
             };
-
             return result;
         }
 
