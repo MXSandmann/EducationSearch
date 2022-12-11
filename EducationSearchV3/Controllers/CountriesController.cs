@@ -34,7 +34,7 @@ namespace EducationSearchV3.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCountry(CreateUpdateCountryDto dto)
+        public async Task<IActionResult> CreateCountry(CreateCountryDto dto)
         {
             var newCountries = await _countryService.Create(dto);
             if (newCountries is null) 
@@ -52,7 +52,7 @@ namespace EducationSearchV3.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCountry(CreateUpdateCountryDto dto)
+        public async Task<IActionResult> UpdateCountry(UpdateCountryDto dto)
         {
             var updated = await _countryService.Update(dto);
             if (updated is null) 

@@ -5,10 +5,10 @@ namespace EducationSearchV3.Services.Contracts
 {
     public interface ICountryService
     {
-        Task<IEnumerable<GetCountryDto>?> Create(CreateUpdateCountryDto dto);
+        Task<IEnumerable<GetCountryDto>?> Create(CreateCountryDto dto);
         Task<IEnumerable<GetCountryDto>?> GetAll();
         Task<GetCountryDto?> GetById(int id);
-        Task<GetCountryDto?> Update(CreateUpdateCountryDto dto);
+        Task<GetCountryDto?> Update(UpdateCountryDto dto);
         Task<IEnumerable<GetCountryDto>?> Delete(int id);
     }
 }

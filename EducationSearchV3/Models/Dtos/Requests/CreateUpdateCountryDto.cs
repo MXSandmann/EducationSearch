@@ -2,13 +2,21 @@
 
 namespace EducationSearchV3.Models.Dtos.Requests
 {
-    public class CreateUpdateCountryDto
+    public class CreateCountryDto
     {
-        public int? Id { get; set; }
         [Required]
         public string Name { get; set; } = string.Empty;
         [Required]
         public IEnumerable<int> LanguageIds { get; set; } = null!;
-        public IEnumerable<int>? HighSchoolIds { get; set; } = null!;
+        public IEnumerable<int>? HighSchoolIds { get; set; }
+    }
+
+    public class UpdateCountryDto
+    {
+        [Required]
+        public int Id { get; set; }
+        public string? Name { get; set; }        
+        public IEnumerable<int>? LanguageIds { get; set; }
+        public IEnumerable<int>? HighSchoolIds { get; set; }
     }
 }

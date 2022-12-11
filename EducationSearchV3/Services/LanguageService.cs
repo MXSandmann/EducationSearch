@@ -23,6 +23,7 @@ namespace EducationSearchV3.Services
                 results.Add(
                     new GetLanguageDto
                     {
+                        Id = language.Id,
                         Name = language.Name.ToString(),
                         Countries = GetCountryNames(language),
                         EducationPrograms = GetProgramNames(language)
@@ -59,6 +60,7 @@ namespace EducationSearchV3.Services
             if(language is null) return null;
             var result = new GetLanguageDto
             {
+                Id = language.Id,
                 Name = language.Name.ToString(),
                 Countries = GetCountryNames(language),
                 EducationPrograms = GetProgramNames(language)

@@ -62,7 +62,7 @@ namespace EducationSearchV3.Services
             return result;
         }
 
-        public async Task<IEnumerable<GetCountryDto>?> Create(CreateUpdateCountryDto dto)
+        public async Task<IEnumerable<GetCountryDto>?> Create(CreateCountryDto dto)
         {
             // Check first if the object with the input name already exists
             var found = await _countryRepository.HasCountryWithName(dto.Name);
@@ -73,8 +73,8 @@ namespace EducationSearchV3.Services
             var newCountry = new Country
             {
                 Name = dto.Name,
-                Languages = await FindLanguagesForDBAsync(dto),
-                HighSchools = await FindHighSchoolsForDBAsync(dto)
+                Languages = await FindLanguagesForDBAsync(dto.LanguageIds),
+                HighSchools = await FindHighSchoolsForDBAsync(dto.HighSchoolIds)
             };
             await _countryRepository.AddCountry(newCountry);            
             return await GetAllCountriesWithDependendentsAsync();
@@ -89,23 +89,24 @@ namespace EducationSearchV3.Services
             return await GetAllCountriesWithDependendentsAsync();
         }
 
-        public async Task<GetCountryDto?> Update(CreateUpdateCountryDto dto)
+        public async Task<GetCountryDto?> Update(UpdateCountryDto dto)
         {
             // Check for id
-            if (dto.Id is null) return null;
+            //if (dto.Id is null) return null;
 
             // Check first if the object to update exists
-            var countryToUpdate = await _countryRepository.GetCountryById(dto.Id.Value);
+            var countryToUpdate = await _countryRepository.GetCountryById(dto.Id);
 
             if (countryToUpdate is null) return null;
-
-            countryToUpdate.Name = dto.Name;
-
-            var newLanguages = await FindLanguagesForDBAsync(dto);
+            
+            if(!string.IsNullOrWhiteSpace(dto.Name))
+                countryToUpdate.Name = dto.Name;
+                        
+            var newLanguages = await FindLanguagesForDBAsync(dto.LanguageIds);
             if (newLanguages.Any())
                 countryToUpdate.Languages.Replace(newLanguages);
 
-            var newHSs = await FindHighSchoolsForDBAsync(dto);
+            var newHSs = await FindHighSchoolsForDBAsync(dto.HighSchoolIds);
             if (newHSs.Any())
                 countryToUpdate.HighSchools.Replace(newHSs);
 
@@ -113,16 +114,16 @@ namespace EducationSearchV3.Services
             return await GetOneCountryWithDependentsAsync(countryToUpdate.Id);
         }
 
-        private async Task<ICollection<Language>> FindLanguagesForDBAsync(CreateUpdateCountryDto dto)
+        private async Task<ICollection<Language>> FindLanguagesForDBAsync(IEnumerable<int>? ids)
         {
             // Null check
-            if (dto.LanguageIds is null) return Array.Empty<Language>();
+            if (ids is null) return Array.Empty<Language>();
 
             // Create a list of languages, which will be added for a country
-            List<Language> languages = new(dto.LanguageIds.ToList().Count);
+            List<Language> languages = new(ids.ToList().Count);
 
             // Find the existing languages in data context by the given from dto id
-            foreach (var languageAsInt in dto.LanguageIds)
+            foreach (var languageAsInt in ids)
             {
                 var language = await _languageRepository.GetLanguageById(languageAsInt);
                 if (language is null)
@@ -133,12 +134,12 @@ namespace EducationSearchV3.Services
             return languages;
         }
 
-        private async Task<ICollection<HighSchool>> FindHighSchoolsForDBAsync(CreateUpdateCountryDto dto)
+        private async Task<ICollection<HighSchool>> FindHighSchoolsForDBAsync(IEnumerable<int>? ids)
         {
-            if (dto.HighSchoolIds is null) return Array.Empty<HighSchool>();
+            if (ids is null) return Array.Empty<HighSchool>();
 
-            List<HighSchool> hss = new(dto.HighSchoolIds.ToList().Count);
-            foreach (var hsId in dto.HighSchoolIds)
+            List<HighSchool> hss = new(ids.ToList().Count);
+            foreach (var hsId in ids)
             {
                 var highSchool = await _highSchoolRepository.GetHighSchoolById(hsId);
                 if (highSchool is null)
