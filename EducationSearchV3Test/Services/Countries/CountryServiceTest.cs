@@ -1,16 +1,9 @@
-﻿using EducationSearchV3.Models;
-using EducationSearchV3.Models.Enums;
-using EducationSearchV3.Repositories.Contracts;
+﻿using EducationSearchV3.Repositories.Contracts;
 using EducationSearchV3.Services;
 using EducationSearchV3.Services.Contracts;
 using Moq;
 using Shouldly;
-using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TestData = EducationSearchV3Test.Countries;
 
 namespace EducationSearchV3Test.Services.Countries
 {
@@ -46,10 +39,11 @@ namespace EducationSearchV3Test.Services.Countries
         public async Task GetAll_ShouldReturnCountry_WithDependents()
         {
             // Arrange
-            var countries = GetTestDataCountries();
+            var countries = TestData.GetCountries();
             var name = countries.First().HighSchools!.First().Name;
             _countryRepoMock.Setup(x => x.GetAllCountries()).
-                ReturnsAsync(() => GetTestDataCountries());
+                ReturnsAsync(() => TestData.GetCountries());
+
             // Act
             var result = await _sut.GetAll();
 
@@ -63,7 +57,7 @@ namespace EducationSearchV3Test.Services.Countries
         {
             // Arrange            
             _countryRepoMock.Setup(x => x.GetCountryById(It.IsAny<int>()))
-                .ReturnsAsync(GetTestDataCountries().First());
+                .ReturnsAsync(TestData.GetCountries().First());
 
             // Act
             var result = await _sut.GetById(new Random().Next());
@@ -86,66 +80,6 @@ namespace EducationSearchV3Test.Services.Countries
 
             // Assert
             result.ShouldBeNull();
-        }
-
-        //[Fact]
-        //public async Task CreateCountry_ShouldSuccess_WhenNotFound()
-        //{
-        //    // Arrange            
-        //    _countryRepoMock.Setup(x => x.HasCountryWithName(It.IsAny<string>()))
-        //        .ReturnsAsync(false);
-        //    _countryRepoMock.Setup(x => x.AddCountry(It.IsAny<Country>()))
-        //        .Verifiable();
-        //    _countryRepoMock.Setup(x => x.GetAllCountries())
-        //        .ReturnsAsync(GetTestDataCountries());
-
-        //    // Act
-        //    var result = await _sut.Create()
-
-
-        //    // Assert
-        //}
-
-        private static List<Country> GetTestDataCountries() => new(2)
-        {
-            new Country
-            {
-                Id = 1,
-                Name = "Test1",
-                Languages = CreateLanguages(),
-                HighSchools = CreateHighSchools()
-            },
-            new Country
-            {
-                Id = 2,
-                Name = "Test2",
-                Languages = CreateLanguages(),
-                HighSchools = CreateHighSchools()
-            }
-        };
-
-        private static List<Language> CreateLanguages() => new(2)
-        {
-            new Language
-            {
-                Id = 1,
-                Name = Languages.English
-            },
-            new Language
-            {
-                Id = 2,
-                Name = Languages.Italian
-            }
-        };
-
-        private static List<HighSchool> CreateHighSchools() => new(1)
-        {
-            new HighSchool
-            {
-                Id = 1,
-                Name = "TestSchool"
-            }
-        };
-        
+        }        
     }
 }
